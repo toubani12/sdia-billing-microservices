@@ -1,0 +1,45 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      server:
+        webflux:
+          # Dynamic routing: one route per registered service, e.g. /customer-service/api/customers
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+          # Explicit routes kept for clean URLs, resolved through Eureka (lb://) instead of host:port
+          routes:
+            - id: customers-route
+              uri: lb://CUSTOMER-SERVICE
+              predicates:
+                - Path=/api/customers/**
+            - id: products-route
+              uri: lb://INVENTORY-SERVICE
+              predicates:
+                - Path=/api/products/**
+            - id: bills-route
+              uri: lb://BILLING-SERVICE
+              predicates:
+                - Path=/api/bills/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+  endpoint:
+    gateway:
+      access: read-only
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
