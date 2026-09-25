@@ -1,0 +1,40 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: billing-service
+  config:
+    # optional: the service still starts (with local defaults) if config-service is down
+    import: optional:configserver:http://localhost:9999
+  datasource:
+    url: jdbc:h2:mem:billing-db
+  h2:
+    console:
+      enabled: true
+  jpa:
+    open-in-view: false
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true   # wraps every Feign client in a Resilience4j circuit breaker
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 2
+        register-health-indicator: true
+  timelimiter:
+    configs:
+      default:
+        timeout-duration: 3s
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
