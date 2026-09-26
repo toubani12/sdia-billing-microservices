@@ -1,0 +1,23 @@
+# Shared by every service that imports its configuration from config-service
+platform:
+  name: SDIA Billing Platform
+  environment: lab
+
+eureka:
+  client:
+    # keep the Eureka client out of @RefreshScope: /actuator/refresh must not re-create it
+    refresh:
+      enable: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,refresh,circuitbreakers
+  endpoint:
+    health:
+      show-details: always

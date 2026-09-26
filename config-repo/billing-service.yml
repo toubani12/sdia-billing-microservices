@@ -1,0 +1,5 @@
+billing:
+  settings:
+    currency: MAD
+    vat-rate: 0.20
+    payment-terms-days: 30
