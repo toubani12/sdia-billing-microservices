@@ -14,11 +14,17 @@ public class SettingsController {
     @Value("${platform.name:unknown platform}")
     private String platformName;
 
+    @Value("${platform.environment:local}")
+    private String environment;
+
     @Value("${inventory.settings.low-stock-threshold:5}")
     private int lowStockThreshold;
 
     @GetMapping("/settings")
     public Map<String, Object> settings() {
-        return Map.of("platformName", platformName, "lowStockThreshold", lowStockThreshold);
+        return Map.of(
+                "platformName", platformName,
+                "environment", environment,
+                "lowStockThreshold", lowStockThreshold);
     }
 }

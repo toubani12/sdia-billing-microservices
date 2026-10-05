@@ -1,0 +1,3 @@
+customer:
+  settings:
+    max-customers-per-page: 50

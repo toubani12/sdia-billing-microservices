@@ -1,0 +1,4 @@
+customer:
+  settings:
+    welcome-message: "[DEV] Welcome to the customer directory"
+    max-customers-per-page: 5

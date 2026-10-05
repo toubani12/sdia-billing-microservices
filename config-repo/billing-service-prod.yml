@@ -1,0 +1,3 @@
+billing:
+  settings:
+    payment-terms-days: 60

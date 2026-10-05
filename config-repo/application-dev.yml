@@ -1,0 +1,7 @@
+# Loaded on top of application.yml by every service started with spring.profiles.active=dev
+platform:
+  environment: dev
+
+logging:
+  level:
+    ma.enset.sdia: DEBUG

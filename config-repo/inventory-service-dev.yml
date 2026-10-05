@@ -1,0 +1,3 @@
+inventory:
+  settings:
+    low-stock-threshold: 3

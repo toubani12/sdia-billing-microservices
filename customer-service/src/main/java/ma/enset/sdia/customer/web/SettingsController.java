@@ -15,6 +15,9 @@ public class SettingsController {
     @Value("${platform.name:unknown platform}")
     private String platformName;
 
+    @Value("${platform.environment:local}")
+    private String environment;
+
     @Value("${customer.settings.welcome-message:Welcome}")
     private String welcomeMessage;
 
@@ -25,6 +28,7 @@ public class SettingsController {
     public Map<String, Object> settings() {
         return Map.of(
                 "platformName", platformName,
+                "environment", environment,
                 "welcomeMessage", welcomeMessage,
                 "maxCustomersPerPage", maxCustomersPerPage);
     }

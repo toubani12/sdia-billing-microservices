@@ -41,8 +41,9 @@ flowchart LR
   and also exposes one automatic route per registered service
   (`/{service-id}/**`, DiscoveryClient locator).
 - **config-service** serves the files in [config-repo/](config-repo/) from this
-  GitHub repository: `application.yml` (shared by all) and `<service>.yml`
-  (per service).
+  GitHub repository: `application.yml` (shared by all), `<service>.yml`
+  (per service), and `-dev` / `-prod` variants of each selected by the
+  active Spring profile.
 
 ## Ports
 
@@ -108,6 +109,29 @@ Stop customer-service and call `/api/bills/1` a few times: the customer becomes
 `"Customer unavailable"` (fallback) and the `CustomerClient` breaker turns
 `OPEN`. Restart it: after the open-state wait (10 s) and the Eureka cache refresh,
 the breaker goes `HALF_OPEN` then `CLOSED`.
+
+### Profiles (dev / prod)
+
+Start a business service with a profile to load the matching files on top of
+the defaults:
+
+```bash
+java -jar customer-service/target/customer-service-1.0.0-SNAPSHOT.jar --spring.profiles.active=dev
+```
+
+The config server merges, from highest to lowest priority:
+`customer-service-dev.yml` > `application-dev.yml` > `customer-service.yml` >
+`application.yml`. To see exactly what a service receives:
+`http://localhost:9999/customer-service/dev` (or `/prod`, `/default`).
+
+| Setting | default | dev | prod |
+|---------|---------|-----|------|
+| `platform.environment` (all) | lab | dev | prod |
+| `customer.settings.max-customers-per-page` | 20 | 5 | 50 |
+| `inventory.settings.low-stock-threshold` | 10 | 3 | 20 |
+| `billing.settings.payment-terms-days` | 30 | 7 | 60 |
+
+`GET /settings` on customer and inventory reports the `environment` in use.
 
 ### Configuration refresh demo
 

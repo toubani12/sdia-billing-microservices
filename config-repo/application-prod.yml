@@ -1,0 +1,7 @@
+# Loaded on top of application.yml by every service started with spring.profiles.active=prod
+platform:
+  environment: prod
+
+logging:
+  level:
+    ma.enset.sdia: WARN
